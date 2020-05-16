@@ -72,6 +72,26 @@ class HomeIndexPresenter
     locale_project_path({ locale_id: rfc5646_locale, id: item.project.to_param }.merge(item_specific_path_params) )
   end
 
+  # @param [Commit, Article] item The {Commit}, {Article}, or {Asset} for which translate link path will be returned.
+  # @return [String] the path for the lilt translate link
+
+  def translate_lilt_link_path(user, item)
+    approved_locales = user.admin? ? item.required_locales : user.approved_locales
+    selected_locales = locales.presence || item.required_locales
+    rfc5646_locale = ((approved_locales & selected_locales).presence || approved_locales).first.rfc5646
+    item_specific_path_params = nil
+    if item.is_a?(Commit)
+      item_specific_path_params = { commit: item.revision }
+    elsif item.is_a?(Article)
+      item_specific_path_params = { article_id: item.id }
+    elsif item.is_a?(Asset)
+      item_specific_path_params = { asset_id: item.id }
+    elsif item.is_a?(Group)
+      item_specific_path_params = { group: item.to_param }
+    end
+    lilt_project_path({ locale_id: rfc5646_locale, id: item.project.to_param, lilt_id: 124538 }.merge(item_specific_path_params) )
+  end
+
   # @param [Commit, Article] item The {Commit}, {Article}, {Group} or {Asset} that will be updated.
   # @return [String] the path to post to to update a Commit/Article
 

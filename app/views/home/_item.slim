@@ -107,6 +107,7 @@ tr.row_class
   - if current_user.translator?
     - if current_user.admin? || current_user.approved_locales.any?
       td = link_to "Translate", @presenter.translate_link_path(current_user, item), class: 'button submit'
+      td = link_to "Transfer to Lilt", @presenter.translate_lilt_link_path(current_user, item), class: 'button submit'
     - else
       td: button.submit disabled="disabled" No locales
   - elsif current_user.monitor?

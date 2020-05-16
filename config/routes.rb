@@ -104,6 +104,10 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
   end
 
+  resources :lilt, only: [] do
+    resources :projects, only: [:show], controller: 'lilt/projects'
+  end
+
   resources :locales, only: :index do
     collection { get :countries }
     resources :projects, only: [:index, :show], controller: 'locale/projects' do
