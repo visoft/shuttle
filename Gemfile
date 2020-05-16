@@ -2,7 +2,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 source 'https://rubygems.org'
 
-ruby '2.4.6'
+ruby '2.5.7'
 
 # FRAMEWORK
 gem 'rails', '4.2.10'
@@ -69,7 +69,7 @@ gem 'mustache'
 gem 'html_validation'
 gem 'diff-lcs'
 gem 'rubyXL', github: 'weshatheleopard/rubyXL'
-gem 'docx', '0.3.1', github: 'visoft/docx'
+gem 'docx', '0.5.0'
 
 # EXPORTING
 gem 'libarchive'
@@ -81,11 +81,11 @@ gem 'uea-stemmer'
 gem 'faker'
 
 # BACKGROUND JOBS
-source 'https://gems.contribsys.com' do
-  gem 'sidekiq-pro', '= 3.4.5'
-end
+#source 'https://gems.contribsys.com' do
+gem 'sidekiq-pro', '= 3.4.5'
+#end
 
-gem 'sidekiq-failures', github: 'mhfs/sidekiq-failures'
+gem 'sidekiq-failures', '=0.4.5'
 gem 'sinatra', require: nil
 gem 'whenever', require: nil
 
@@ -107,6 +107,10 @@ end
 
 # METRICS
 gem 'newrelic_rpm'
+
+group :development, :test do
+  gem 'dotenv-rails'
+end
 
 group :development do
   gem 'capistrano'

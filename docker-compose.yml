@@ -9,11 +9,14 @@ services:
     - POSTGRES_USER=shuttle
     - POSTGRES_PASSWORD=
     - POSTGRES_DB=shuttle_development
+    - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
     - '5432:5432'
 
   redis:
     image: redis
+    ports:
+      - '6379:6379'
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1

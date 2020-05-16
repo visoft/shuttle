@@ -1,4 +1,4 @@
-FROM ruby:2.4.6
+FROM ruby:2.5.7
 
 ARG BUNDLE_GEMS__CONTRIBSYS__COM
 ENV APP_HOME /app
@@ -17,7 +17,8 @@ RUN apt-get update -qq \
 
 COPY Gemfile* $APP_HOME/
 RUN gem update --system
-RUN gem install bundler --version '>= 1.16.1' --conservative
-RUN bundle install
+RUN gem install bundler:1.17.3
 
 COPY . $APP_HOME
+RUN gem install /app/vendor/sidekiq-pro-3.4.5.gem
+RUN bundle install
