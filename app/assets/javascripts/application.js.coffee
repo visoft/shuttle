@@ -47,6 +47,7 @@
 #= require diff_match_patch.js
 #= require spin.js
 #= require dropzone
+#= require lilt
 #
 #= require d3
 #= require nvd3

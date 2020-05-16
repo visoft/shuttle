@@ -1,0 +1,60 @@
+Lilt.key = "<%= ENV['LILT_API_KEY'] %>"
+lilt_source_hash_url = 'https://lilt.com/2/translate/register'
+memory_id = "<%= ENV['LILT_MEMORY'] %>"
+
+workbench = document.querySelector('.translation-workbench')
+if workbench
+  MutationObserver = window.MutationObserver
+  new MutationObserver (mutations) ->
+    mutations.forEach (mutation) =>
+      if mutation.addedNodes[0].classList.contains('entry')
+        entry = mutation.addedNodes[0]
+        source_text = entry.querySelector('.source-copy').innerText
+        textarea = entry.querySelector('.translation-area')
+
+        $.ajax
+          url: lilt_source_hash_url
+          type: 'get'
+          data:
+            key: Lilt.key
+            srclang: 'en'
+            trglang: 'fr'
+            source: source_text
+          success: (response) ->
+            source_hash = response.source_hash
+            service = Lilt.translationService(source_hash, memory_id)
+            translator = Lilt.translator(service)
+            $additional_info = $('.additional-info', $(entry))
+            $lilt_info = $('div.item.lilt', $additional_info)
+
+            if !$lilt_info.length
+              $lilt_info = $('<div class="item lilt"></div>').appendTo($additional_info)
+
+              translator.translate('', 0).then (translator) ->
+                $lilt_info.empty()
+                $lilt_link = $('<a/>').text(translator.translation)
+                $lilt_info.append($('<dt/>').text('Lilt Translation'))
+                $lilt_info.append($('<dd/>').append($lilt_link))
+
+                $lilt_link.click ->
+                  $(textarea).val(translator.translation)
+
+            $(textarea).on 'keyup', (e) ->
+              $target = $(e.target)
+              index = $target.prop('selectionStart');
+              value = $target.val()
+
+              translator.translate(value, index).then (translator) ->
+                $lilt_info.empty()
+                $lilt_link = $('<a/>').text(translator.translation)
+                $lilt_info.append($('<dt/>').text('Lilt Translation'))
+                $lilt_info.append($('<dd/>').append($lilt_link))
+
+                $lilt_link.click ->
+                  $(textarea).val(translator.translation)
+
+            return true
+  .observe(
+      workbench
+      childList: true
+  )

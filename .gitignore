@@ -8,3 +8,4 @@ public/system/**
 .byebug_history
 pg_data/
 .vscode/
+.env
