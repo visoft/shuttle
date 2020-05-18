@@ -1,1 +1,10 @@
-= @lilt_document
+- content_for :shuttle_title do
+  = "Lilt Document - Shuttle"
+- content_for :file_name do
+  = 'views/lilt/projects/show'
+
+-if @lilt_document
+  h1 Success
+  .container
+    a.button.submit href="https://lilt.com/app/projects/details/#{@lilt_document['project_id']}/edit-document/#{@lilt_document['id']}"
+      | Edit in Lilt

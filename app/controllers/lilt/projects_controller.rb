@@ -76,14 +76,17 @@ class Lilt::ProjectsController < ApplicationController
 
     json = keys.to_json
 
-    @lilt_document = HTTParty.post "https://lilt.com/2/documents/files?key=#{lilt_api_key}",
+    result = HTTParty.post "https://lilt.com/2/documents/files?key=#{lilt_api_key}",
        verify: false, # allows for localhost proxy Charles to work
        headers: {
                   'Transfer-Encoding' => 'chunked',
                   'Content-Type' => 'application/octet-stream',
+                  'Accept' => 'application/json',
                    Net::HTTP::ImmutableHeaderKey.new('LILT-API') => "{ \"name\": \"test.json\", \"project_id\": #{lilt_project_id} }"
                 },
        body_stream: StringIO.new(json)
+
+    @lilt_document = JSON.parse(result.response.body)
   end
 
   private
