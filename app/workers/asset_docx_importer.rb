@@ -59,7 +59,7 @@ class AssetDocxImporter
       Docx::Document.open(file.path)
     else
       content = open(file.url).read
-      Docx::Document.open_buffer(content)
+      Docx::Document.open(content)
     end
   end
 
